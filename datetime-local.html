@@ -1,0 +1,80 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="datetime-local">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <input type="date" value="{{date::input}}">
+    <input type="time" value="{{time::input}}" step="[[step]]">
+  </template>
+
+  <script>
+	/**
+		* `datetime-local`
+		* Mimics &lt;input type=&#34;datetime-local&#34;&gt; with brad browser support
+		*
+		* @customElement
+		* @polymer
+		* @demo demo/index.html
+		*/
+	class DatetimeLocal extends Polymer.Element {
+		static get is() {
+			return 'datetime-local';
+		}
+		static get properties() {
+			return {
+				date: {
+					type: String,
+					notify: true
+				},
+				time: {
+					type: String,
+					notify: true
+				},
+				step: {
+					type: String,
+					value: '1'
+				},
+				value: {
+					type: String,
+					notify: true,
+					observer: '_valueChanged'
+				}
+			};
+		}
+		static get observers() {
+			return [
+				'_setValue(date, time)'
+			];
+		}
+
+		_setValue(date, time) {
+			if (date && time) {
+				this.value = `${date}T${time}`;
+				return;
+			}
+			this.value = date ? date : time;
+		}
+
+		_valueChanged(value) {
+			var isDatetime = ['T', ' '].some(split => {
+				if (!value.match(split)) {
+					return;
+				}
+				this.date = value.split(split)[0];
+				this.time = value.split(split)[1];
+				return true;
+			});
+
+			if (!isDatetime) {
+				this.date = value;
+			}
+		}
+	}
+
+	window.customElements.define(DatetimeLocal.is, DatetimeLocal);
+  </script>
+</dom-module>
