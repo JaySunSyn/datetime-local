@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/polymer.html">
 
 <dom-module id="datetime-local">
   <template>
@@ -20,12 +20,10 @@
 		* @polymer
 		* @demo demo/index.html
 		*/
-	class DatetimeLocal extends Polymer.Element {
-		static get is() {
-			return 'datetime-local';
-		}
-		static get properties() {
-			return {
+		Polymer({
+			is: 'datetime-local',
+	
+			properties: {
 				date: {
 					type: String,
 					notify: true
@@ -43,38 +41,34 @@
 					notify: true,
 					observer: '_valueChanged'
 				}
-			};
-		}
-		static get observers() {
-			return [
+			},
+
+			observers: [
 				'_setValue(date, time)'
-			];
-		}
+			],
 
-		_setValue(date, time) {
-			if (date && time) {
-				this.value = `${date}T${time}`;
-				return;
-			}
-			this.value = date ? date : time;
-		}
-
-		_valueChanged(value) {
-			var isDatetime = ['T', ' '].some(split => {
-				if (!value.match(split)) {
+			_setValue(date, time) {
+				if (date && time) {
+					this.value = `${date}T${time}`;
 					return;
 				}
-				this.date = value.split(split)[0];
-				this.time = value.split(split)[1];
-				return true;
-			});
+				this.value = date ? date : time;
+			},
 
-			if (!isDatetime) {
-				this.date = value;
+			_valueChanged(value) {
+				var isDatetime = ['T', ' '].some(split => {
+					if (!value.match(split)) {
+						return;
+					}
+					this.date = value.split(split)[0];
+					this.time = value.split(split)[1];
+					return true;
+				});
+
+				if (!isDatetime) {
+					this.date = value;
+				}
 			}
-		}
-	}
-
-	window.customElements.define(DatetimeLocal.is, DatetimeLocal);
-  </script>
+		});
+	</script>
 </dom-module>
