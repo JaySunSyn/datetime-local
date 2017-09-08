@@ -3,7 +3,8 @@
   "description": "Mimics &lt;input type=&#34;datetime-local&#34;&gt; with brad browser support",
   "main": "datetime-local.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.9.0"
+    "polymer": "Polymer/polymer#^1.9.0",
+    "paper-input": "^2.0.2"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
